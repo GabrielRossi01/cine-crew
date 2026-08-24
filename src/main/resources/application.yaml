@@ -50,15 +50,15 @@ spring:
 server:
   port: ${SERVER_PORT:8080}
 
-# Propriedades próprias da aplicação (não gerenciadas pelo Spring Boot)
+rsa:
+  public-key: classpath:certs/public.key
+  private-key: classpath:certs/private.key
+
 app:
   security:
     jwt:
-      public-key-location: classpath:certs/public.pem
-      private-key-location: classpath:certs/private.pem
       expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}
-  invite:
-    ttl-minutes: ${INVITE_TTL_MINUTES:30}
+      issuer: cinecrew
 
 springdoc:
   swagger-ui:

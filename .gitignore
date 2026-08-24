@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Local JWT RSA key pair
+src/main/resources/certs/*.key
+!src/main/resources/certs/README.md
