@@ -1,0 +1,17 @@
+CREATE SEQUENCE clubs_seq START WITH 1 INCREMENT BY 50;
+
+CREATE TABLE clubs (
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description VARCHAR(500),
+    owner_id BIGINT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_clubs_owner
+        FOREIGN KEY (owner_id)
+        REFERENCES users (id)
+        ON DELETE RESTRICT
+);
+
+CREATE INDEX idx_clubs_owner_id ON clubs (owner_id);
