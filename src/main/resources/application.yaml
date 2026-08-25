@@ -22,6 +22,12 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: false
 
+  cache:
+    type: redis
+    redis:
+      time-to-live: 10m
+      cache-null-values: false
+
   data:
     redis:
       host: ${REDIS_HOST:localhost}
@@ -55,6 +61,9 @@ rsa:
   private-key: classpath:certs/private.key
 
 app:
+  frontend-url: ${FRONTEND_URL:http://localhost:4200}
+  invite:
+    ttl-minutes: ${INVITE_TTL_MINUTES:30}
   security:
     jwt:
       expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}

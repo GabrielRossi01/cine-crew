@@ -13,5 +13,7 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 
     List<ClubMember> findByClubIdOrderByClubScoreDesc(Long clubId);
 
+    List<ClubMember> findByUserId(Long userId);
+
     boolean existsByClubIdAndUserId(Long clubId, Long userId);
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -16,5 +17,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         WHERE p.event.club.id = :clubId
         ORDER BY p.createdAt DESC
         """)
-    Page<Post> findFeedByClubId(Long clubId, Pageable pageable);
+    Page<Post> findFeedByClubId(
+            @Param("clubId") Long clubId,
+            Pageable pageable
+    );
 }

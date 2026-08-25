@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.UUID;
 
 public record CreateEventRequest(
         @NotBlank(message = "Título do filme é obrigatório")
@@ -28,5 +27,5 @@ public record CreateEventRequest(
         BigDecimal totalAmount,
 
         @NotNull(message = "É necessário informar ao menos os IDs dos participantes")
-        List<UUID> participantUserIds
+        List<Long> participantUserIds
 ) {}

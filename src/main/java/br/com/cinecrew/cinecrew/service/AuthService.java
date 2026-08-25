@@ -63,12 +63,7 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthResponse loginWithGoogle(
-            String googleId,
-            String email,
-            String name,
-            String avatarUrl
-    ) {
+    public AuthResponse loginWithGoogle(String googleId, String email, String name, String avatarUrl) {
         validateGoogleAttributes(googleId, email, name);
 
         String normalizedEmail = normalizeEmail(email);
@@ -84,12 +79,7 @@ public class AuthService {
         return createAuthResponse(user);
     }
 
-    private User findOrCreateGoogleUser(
-            String googleId,
-            String email,
-            String name,
-            String avatarUrl
-    ) {
+    private User findOrCreateGoogleUser(String googleId, String email, String name, String avatarUrl) {
         return userRepository.findByEmail(email)
                 .map(existingUser -> linkGoogleAccount(
                         existingUser,
@@ -107,12 +97,7 @@ public class AuthService {
                 ));
     }
 
-    private User linkGoogleAccount(
-            User existingUser,
-            String googleId,
-            String name,
-            String avatarUrl
-    ) {
+    private User linkGoogleAccount(User existingUser, String googleId, String name, String avatarUrl) {
         existingUser.setGoogleId(googleId);
 
         if (existingUser.getName() == null || existingUser.getName().isBlank()) {
@@ -139,17 +124,11 @@ public class AuthService {
         return email.trim().toLowerCase(Locale.ROOT);
     }
 
-    private void validateGoogleAttributes(
-            String googleId,
-            String email,
-            String name
-    ) {
+    private void validateGoogleAttributes(String googleId, String email, String name) {
         if (googleId == null || googleId.isBlank()
                 || email == null || email.isBlank()
                 || name == null || name.isBlank()) {
-            throw new BusinessRuleException(
-                    "Não foi possível obter os dados obrigatórios da conta Google"
-            );
+            throw new BusinessRuleException("Não foi possível obter os dados obrigatórios da conta Google");
         }
     }
 }
