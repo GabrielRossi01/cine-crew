@@ -8,6 +8,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 @EnableConfigurationProperties(RsaKeyProperties.class)
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URLS = {
@@ -46,12 +48,6 @@ public class SecurityConfig {
     private final RsaKeyProperties rsaKeys;
     private final CustomUserDetailsService userDetailsService;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-
-    public SecurityConfig(RsaKeyProperties rsaKeys, CustomUserDetailsService userDetailsService, OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) {
-        this.rsaKeys = rsaKeys;
-        this.userDetailsService = userDetailsService;
-        this.oAuth2LoginSuccessHandler = oAuth2LoginSuccessHandler;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

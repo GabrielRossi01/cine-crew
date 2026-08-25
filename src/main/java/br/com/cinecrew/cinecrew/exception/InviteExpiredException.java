@@ -1,7 +1,10 @@
 package br.com.cinecrew.cinecrew.exception;
 
-public class InviteExpiredException extends RuntimeException {
-    public InviteExpiredException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class InviteExpiredException extends ApiException {
+
+    public InviteExpiredException() {
+        super("Este link de convite expirou ou é inválido", HttpStatus.GONE);
     }
 }

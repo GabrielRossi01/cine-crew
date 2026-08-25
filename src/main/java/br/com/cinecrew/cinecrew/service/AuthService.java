@@ -4,6 +4,7 @@ import br.com.cinecrew.cinecrew.dto.request.LoginRequest;
 import br.com.cinecrew.cinecrew.dto.request.RegisterRequest;
 import br.com.cinecrew.cinecrew.dto.response.AuthResponse;
 import br.com.cinecrew.cinecrew.exception.BusinessRuleException;
+import br.com.cinecrew.cinecrew.exception.DuplicateResourceException;
 import br.com.cinecrew.cinecrew.model.User;
 import br.com.cinecrew.cinecrew.repository.UserRepository;
 import br.com.cinecrew.cinecrew.security.SecurityUser;
@@ -32,7 +33,7 @@ public class AuthService {
         String normalizedEmail = normalizeEmail(request.email());
 
         if (userRepository.existsByEmail(normalizedEmail)) {
-            throw new BusinessRuleException("Já existe uma conta vinculada a este email");
+            throw new DuplicateResourceException("Já existe uma conta vinculada a este email");
         }
 
         User user = User.builder()
