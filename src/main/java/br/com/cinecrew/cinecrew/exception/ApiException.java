@@ -10,8 +10,4 @@ public abstract class ApiException extends RuntimeException {
         super(message);
         this.status = status;
     }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
 }

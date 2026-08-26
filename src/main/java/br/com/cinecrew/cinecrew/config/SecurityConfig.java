@@ -37,12 +37,12 @@ import java.util.List;
 public class SecurityConfig {
 
     private static final String[] PUBLIC_URLS = {
-            "/api/auth/**",
+            "/auth/**",
             "/oauth2/**",
             "/login/**",
             "/docs/**",
             "/swagger-ui/**",
-            "/v3/api-docs/**"
+            "/openapi/**"
     };
 
     private final RsaKeyProperties rsaKeys;
@@ -73,8 +73,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider(userDetailsService);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
         provider.setPasswordEncoder(passwordEncoder);
 
@@ -87,9 +86,7 @@ public class SecurityConfig {
                 .withPublicKey(rsaKeys.publicKey())
                 .build();
 
-        jwtDecoder.setJwtValidator(
-                JwtValidators.createDefaultWithIssuer("cinecrew")
-        );
+        jwtDecoder.setJwtValidator(JwtValidators.createDefaultWithIssuer("cinecrew"));
 
         return jwtDecoder;
     }
@@ -100,8 +97,7 @@ public class SecurityConfig {
                 .privateKey(rsaKeys.privateKey())
                 .build();
 
-        JWKSource<SecurityContext> jwkSource =
-                new ImmutableJWKSet<>(new JWKSet(rsaKey));
+        JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(rsaKey));
 
         return new NimbusJwtEncoder(jwkSource);
     }
@@ -116,18 +112,13 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-        configuration.setAllowedMethods(List.of(
-                "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"
-        ));
-        configuration.setAllowedHeaders(List.of(
-                "Authorization", "Content-Type"
-        ));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setAllowCredentials(false);
         configuration.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration("/**", configuration);
 

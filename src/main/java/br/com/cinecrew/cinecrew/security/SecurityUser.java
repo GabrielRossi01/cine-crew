@@ -15,8 +15,11 @@ public class SecurityUser implements UserDetails, CredentialsContainer {
 
     @Getter
     private final Long id;
+
     private final String email;
+
     private String passwordHash;
+
     @Getter
     private final User user;
 

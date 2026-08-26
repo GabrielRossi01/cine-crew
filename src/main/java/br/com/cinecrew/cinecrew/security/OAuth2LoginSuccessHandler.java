@@ -24,11 +24,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private String frontendUrl;
 
     @Override
-    public void onAuthenticationSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication
-    ) throws IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
         OAuth2User googleUser = (OAuth2User) authentication.getPrincipal();
 

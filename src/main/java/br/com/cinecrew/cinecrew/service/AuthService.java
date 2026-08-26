@@ -3,8 +3,11 @@ package br.com.cinecrew.cinecrew.service;
 import br.com.cinecrew.cinecrew.dto.request.LoginRequest;
 import br.com.cinecrew.cinecrew.dto.request.RegisterRequest;
 import br.com.cinecrew.cinecrew.dto.response.AuthResponse;
+import br.com.cinecrew.cinecrew.dto.response.UserSummaryResponse;
 import br.com.cinecrew.cinecrew.exception.BusinessRuleException;
 import br.com.cinecrew.cinecrew.exception.DuplicateResourceException;
+import br.com.cinecrew.cinecrew.exception.ResourceNotFoundException;
+import br.com.cinecrew.cinecrew.mapper.UserMapper;
 import br.com.cinecrew.cinecrew.model.User;
 import br.com.cinecrew.cinecrew.repository.UserRepository;
 import br.com.cinecrew.cinecrew.security.SecurityUser;
@@ -27,6 +30,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+    private final UserMapper userMapper;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -130,5 +134,12 @@ public class AuthService {
                 || name == null || name.isBlank()) {
             throw new BusinessRuleException("Não foi possível obter os dados obrigatórios da conta Google");
         }
+    }
+
+    public UserSummaryResponse getCurrentUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", userId));
+
+        return userMapper.toSummaryResponse(user);
     }
 }

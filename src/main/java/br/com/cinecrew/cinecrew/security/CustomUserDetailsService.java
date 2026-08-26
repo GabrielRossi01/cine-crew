@@ -18,8 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(@NonNull String email) {
         return userRepository.findByEmail(email)
                 .map(SecurityUser::new)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("Credenciais inválidas")
-                );
+                .orElseThrow(() -> new UsernameNotFoundException("Credenciais inválidas"));
     }
 }
