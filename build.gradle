@@ -18,6 +18,12 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    mockitoAgent {
+        transitive = false
+    }
+}
+
 ext {
     set('springAiVersion', "2.0.0")
 }
@@ -32,7 +38,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.flywaydb:flyway-database-postgresql'
-    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
+//    implementation 'org.springframework.ai:spring-ai-starter-model-openai'
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0")
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -51,6 +57,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
+    mockitoAgent 'org.mockito:mockito-core:5.21.0'
 }
 
 dependencyManagement {
@@ -61,4 +68,6 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+
+    jvmArgs "-javaagent:${configurations.mockitoAgent.asPath}"
 }

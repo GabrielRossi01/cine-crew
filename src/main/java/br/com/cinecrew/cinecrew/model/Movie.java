@@ -35,7 +35,7 @@ public class Movie extends BaseEntity {
     private String posterUrl;
 
     @Column(name = "release_year")
-    private Integer releaseYear;
+    private Short releaseYear;
 
     @Builder.Default
     @OneToMany(mappedBy = "movie")
