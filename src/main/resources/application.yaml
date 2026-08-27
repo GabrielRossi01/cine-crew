@@ -24,6 +24,8 @@ spring:
 
   cache:
     type: redis
+    cache-names:
+      - club-rankings
     redis:
       time-to-live: 10m
       cache-null-values: false
