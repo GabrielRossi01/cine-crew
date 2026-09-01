@@ -30,7 +30,7 @@ public class EventParticipant extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_participants_seq")
-    @SequenceGenerator(name = "event_participants_seq", sequenceName = "users_seq", allocationSize = 50)
+    @SequenceGenerator(name = "event_participants_seq", sequenceName = "event_participants_seq", allocationSize = 50)
     @Column(nullable = false, updatable = false)
     private Long id;
 

@@ -21,7 +21,7 @@ public class Movie extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movies_seq")
-    @SequenceGenerator(name = "movies_seq", sequenceName = "users_seq", allocationSize = 50)
+    @SequenceGenerator(name = "movies_seq", sequenceName = "movies_seq", allocationSize = 50)
     @Column(nullable = false, updatable = false)
     private Long id;
 
