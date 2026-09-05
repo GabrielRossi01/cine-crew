@@ -51,7 +51,8 @@ public class RedisConfig {
     public RedisCacheManagerBuilderCustomizer redisCacheManagerBuilderCustomizer() {
         return builder -> builder
                 .cacheDefaults(defaultCacheConfig())
-                .withCacheConfiguration(CLUB_RANKINGS_CACHE, defaultCacheConfig().entryTtl(Duration.ofMinutes(10)));
+                .withCacheConfiguration(CLUB_RANKINGS_CACHE, defaultCacheConfig().entryTtl(Duration.ofMinutes(10)))
+                .withCacheConfiguration("tmdb-movie-details", defaultCacheConfig().entryTtl(Duration.ofHours(24)));
     }
 
     private RedisCacheConfiguration defaultCacheConfig() {
