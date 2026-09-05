@@ -37,16 +37,9 @@ spring:
       password: ${REDIS_PASSWORD:}
 
   ai:
-    model:
-      chat:
-        openai:
-          base-url: https://generativelanguage.googleapis.com/v1beta/openai
-          api-key: ${GEMINI_API_KEY}
-          chat:
-            options:
-              model: gemini-2.0-flash
-              temperature: 0.7
-
+    openai:
+      base-url: https://generativelanguage.googleapis.com/v1beta/openai
+      api-key: ${GEMINI_API_KEY}
 
   security:
     oauth2:
