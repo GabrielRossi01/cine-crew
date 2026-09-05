@@ -96,5 +96,5 @@ logging:
 
 tmdb:
   base-url: https://api.themoviedb.org/3
-  access-token: ${TMDB_ACCESS_TOKEN:eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMzY4ZDUzNjUxMzE4YzQyMjMyZWQ4MDE0ZDAxYWFiNiIsIm5iZiI6MTc4ODU2NTEwOC43MzMsInN1YiI6IjZhOWI1Njc0NWZkZjE5OTNhOWQxODViYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Xj9-egPl0wVfPQwAYOGbuKWFV21EV0Uj864eQM4-PtU}
+  access-token: ${TMDB_ACCESS_TOKEN}
   image-base-url: https://image.tmdb.org/t/p/w500
