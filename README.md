@@ -64,7 +64,7 @@ Grupos de amigos que frequentam o cinema com regularidade e querem substituir gr
 - **Camadas bem definidas**: `controller` → `service` → `repository`, sem lógica de negócio no controller. DTOs de entrada/saída separados em `dto/request` e `dto/response`, nunca expondo entidades JPA diretamente na API.
 - **Entidades de junção explícitas** (`ClubMember`, `EventParticipant`, `WatchlistItem`) em vez de `@ManyToMany` implícito — facilita versionamento de schema via Flyway e permite atributos extras no relacionamento.
 - **IDs sequenciais (`Long` + `SEQUENCE`)** em vez de UUID, priorizando performance de índice no PostgreSQL para este cenário.
-- **Anti-Corruption Layer para APIs externas**: o pacote `client/tmdb` isola completamente o contrato do TMDB do domínio da aplicação — mudanças na API externa não afetam o restante do sistema.
+- **Anti-Corruption Layer para APIs externas**: o pacote `client` isola completamente o contrato do TMDB do domínio da aplicação — mudanças na API externa não afetam o restante do sistema.
 - **RestClient em vez de WebClient**: a aplicação é MVC síncrona (não reativa), então o cliente HTTP moderno e não-reativo do Spring é a escolha coerente, evitando complexidade desnecessária de `Mono`/`Flux` fora do fluxo de IA.
 - **Cache Redis com serialização JSON (Jackson 3)**: substitui a serialização Java padrão, com `PolymorphicTypeValidator` restrito ao pacote do projeto por segurança contra desserialização arbitrária.
 - **JWT com chave RSA assimétrica**: emissão e validação de token sem depender de um segredo simétrico compartilhado, alinhado ao fluxo OAuth2 com Google.
