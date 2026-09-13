@@ -42,6 +42,7 @@ public class AuthService {
 
         User user = User.builder()
                 .name(request.name().trim())
+                .username(generateInitialUsername(request.name()))
                 .email(normalizedEmail)
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .build();
@@ -94,6 +95,7 @@ public class AuthService {
                 .orElseGet(() -> userRepository.save(
                         User.builder()
                                 .name(name)
+                                .username(generateInitialUsername(name))
                                 .email(email)
                                 .googleId(googleId)
                                 .avatarUrl(avatarUrl)
@@ -141,5 +143,39 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário", userId));
 
         return userMapper.toSummaryResponse(user);
+    }
+
+    private String generateInitialUsername(String name) {
+        String baseUsername = name
+                .trim()
+                .toLowerCase(Locale.ROOT)
+                .replaceAll("[^a-z0-9]+", ".")
+                .replaceAll("^\\.|\\.$", "");
+
+        if (baseUsername.length() < 3) {
+            baseUsername = "user";
+        }
+
+        baseUsername = baseUsername.substring(
+                0,
+                Math.min(baseUsername.length(), 25)
+        );
+
+        String username = baseUsername;
+        int suffix = 1;
+
+        while (userRepository.existsByUsername(username)) {
+            suffix++;
+
+            String suffixValue = String.valueOf(suffix);
+            int maxBaseLength = 30 - suffixValue.length() - 1;
+
+            username = baseUsername.substring(
+                    0,
+                    Math.min(baseUsername.length(), maxBaseLength)
+            ) + "." + suffixValue;
+        }
+
+        return username;
     }
 }
