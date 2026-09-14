@@ -27,7 +27,13 @@ public class MovieService {
     private final TmdbProperties tmdbProperties;
 
     public List<MovieSearchResultResponse> searchMovies(String query, int page) {
-        var response = tmdbClient.searchMovies(query, page);
+        if (query == null || query.isBlank()) {
+            return List.of();
+        }
+
+        int normalizedPage = Math.max(page, 1);
+
+        var response = tmdbClient.searchMovies(query.trim(), normalizedPage);
 
         return response.results().stream()
                 .map(this::toSearchResultDto)

@@ -2,6 +2,8 @@ package br.com.cinecrew.cinecrew.service;
 
 import br.com.cinecrew.cinecrew.dto.request.AddToWatchlistRequest;
 import br.com.cinecrew.cinecrew.dto.response.WatchlistItemResponse;
+import br.com.cinecrew.cinecrew.exception.DuplicateResourceException;
+import br.com.cinecrew.cinecrew.exception.ResourceNotFoundException;
 import br.com.cinecrew.cinecrew.mapper.WatchlistItemMapper;
 import br.com.cinecrew.cinecrew.model.Movie;
 import br.com.cinecrew.cinecrew.model.User;
@@ -32,14 +34,14 @@ public class WatchlistService {
 
         if (watchlistItemRepository.existsByUserIdAndMovieId(userId, request.movieId())) {
             log.warn("Usuário id={} já tem o filme id={} na lista de desejos", userId, request.movieId());
-            throw new IllegalArgumentException("Este filme já está na sua lista de desejos");
+            throw new DuplicateResourceException("Este filme já está na sua lista de desejos");
         }
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
         Movie movie = movieRepository.findById(request.movieId())
-                .orElseThrow(() -> new IllegalArgumentException("Filme não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Filme", request.movieId()));
 
         WatchlistItem watchlistItem = WatchlistItem.builder()
                 .user(user)
