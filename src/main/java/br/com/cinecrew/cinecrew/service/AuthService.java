@@ -9,6 +9,7 @@ import br.com.cinecrew.cinecrew.exception.DuplicateResourceException;
 import br.com.cinecrew.cinecrew.exception.ResourceNotFoundException;
 import br.com.cinecrew.cinecrew.mapper.UserMapper;
 import br.com.cinecrew.cinecrew.model.User;
+import br.com.cinecrew.cinecrew.model.enums.AvatarSource;
 import br.com.cinecrew.cinecrew.repository.UserRepository;
 import br.com.cinecrew.cinecrew.security.SecurityUser;
 import br.com.cinecrew.cinecrew.security.TokenService;
@@ -74,11 +75,19 @@ public class AuthService {
         String normalizedEmail = normalizeEmail(email);
 
         User user = userRepository.findByGoogleId(googleId)
-                .orElseGet(() -> findOrCreateGoogleUser(
-                        googleId,
-                        normalizedEmail,
-                        name.trim(),
-                        avatarUrl
+                .orElseGet(() -> userRepository.save(
+                        User.builder()
+                                .name(name)
+                                .username(generateInitialUsername(name))
+                                .email(email)
+                                .googleId(googleId)
+                                .avatarUrl(avatarUrl)
+                                .avatarSource(
+                                        avatarUrl == null || avatarUrl.isBlank()
+                                                ? AvatarSource.NONE
+                                                : AvatarSource.GOOGLE
+                                )
+                                .build()
                 ));
 
         return createAuthResponse(user);
@@ -110,8 +119,11 @@ public class AuthService {
             existingUser.setName(name);
         }
 
-        if (avatarUrl != null && !avatarUrl.isBlank()) {
+        boolean hasCustomAvatar = existingUser.getAvatarSource() == AvatarSource.UPLOAD;
+
+        if (!hasCustomAvatar && avatarUrl != null && !avatarUrl.isBlank()) {
             existingUser.setAvatarUrl(avatarUrl);
+            existingUser.setAvatarSource(AvatarSource.GOOGLE);
         }
 
         return userRepository.save(existingUser);

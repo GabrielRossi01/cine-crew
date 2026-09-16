@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/clubs/{clubId}/ranking")
@@ -48,6 +49,6 @@ public class RankingController {
     }
 
     private Long extractUserId(Jwt jwt) {
-        return Long.valueOf(jwt.getSubject());
+        return Long.valueOf(Objects.requireNonNull(jwt.getSubject()));
     }
 }

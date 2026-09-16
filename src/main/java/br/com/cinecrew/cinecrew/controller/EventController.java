@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -76,6 +77,6 @@ public class EventController {
     }
 
     private Long extractUserId(Jwt jwt) {
-        return Long.valueOf(jwt.getSubject());
+        return Long.valueOf(Objects.requireNonNull(jwt.getSubject()));
     }
 }

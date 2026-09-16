@@ -1,5 +1,6 @@
 package br.com.cinecrew.cinecrew.model;
 
+import br.com.cinecrew.cinecrew.model.enums.AvatarSource;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,6 +43,11 @@ public class User extends BaseEntity {
 
     @Column(name = "avatar_url", length = 500)
     private String avatarUrl;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "avatar_source", nullable = false, length = 20)
+    @Builder.Default
+    private AvatarSource avatarSource = AvatarSource.NONE;
 
     @Builder.Default
     @Column(name = "global_score", nullable = false)

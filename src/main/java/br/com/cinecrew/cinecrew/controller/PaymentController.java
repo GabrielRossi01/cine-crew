@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/events/{eventId}")
 @RequiredArgsConstructor
@@ -64,6 +66,6 @@ public class PaymentController {
     }
 
     private Long extractUserId(Jwt jwt) {
-        return Long.valueOf(jwt.getSubject());
+        return Long.valueOf(Objects.requireNonNull(jwt.getSubject()));
     }
 }

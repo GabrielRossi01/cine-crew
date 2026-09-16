@@ -6,10 +6,13 @@ import br.com.cinecrew.cinecrew.exception.DuplicateResourceException;
 import br.com.cinecrew.cinecrew.exception.ResourceNotFoundException;
 import br.com.cinecrew.cinecrew.mapper.UserMapper;
 import br.com.cinecrew.cinecrew.model.User;
+import br.com.cinecrew.cinecrew.model.enums.AvatarSource;
 import br.com.cinecrew.cinecrew.repository.UserRepository;
+import br.com.cinecrew.cinecrew.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Locale;
 
@@ -19,6 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final FileStorageService fileStorageService;
 
     @Transactional(readOnly = true)
     public UserProfileResponse getCurrentProfile(Long userId) {
@@ -28,10 +32,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserProfileResponse updateCurrentProfile(
-            Long userId,
-            UpdateProfileRequest request
-    ) {
+    public UserProfileResponse updateCurrentProfile(Long userId, UpdateProfileRequest request) {
         User user = findUser(userId);
 
         String normalizedUsername = normalizeUsername(request.username());
@@ -51,12 +52,39 @@ public class UserService {
     }
 
     @Transactional
+    public UserProfileResponse uploadCurrentAvatar(Long userId, MultipartFile file) {
+        User user = findUser(userId);
+
+        String previousAvatarUrl = user.getAvatarUrl();
+
+        String avatarUrl = fileStorageService.storeAvatar(userId, file);
+
+        user.setAvatarUrl(avatarUrl);
+        user.setAvatarSource(AvatarSource.UPLOAD);
+
+        User savedUser = userRepository.save(user);
+
+        if (previousAvatarUrl != null && !previousAvatarUrl.isBlank()) {
+            fileStorageService.deleteByUrl(previousAvatarUrl);
+        }
+
+        return userMapper.toProfileResponse(savedUser);
+    }
+
+    @Transactional
     public void removeCurrentAvatar(Long userId) {
         User user = findUser(userId);
 
+        String previousAvatarUrl = user.getAvatarUrl();
+
         user.setAvatarUrl(null);
+        user.setAvatarSource(AvatarSource.NONE);
 
         userRepository.save(user);
+
+        if (previousAvatarUrl != null && !previousAvatarUrl.isBlank()) {
+            fileStorageService.deleteByUrl(previousAvatarUrl);
+        }
     }
 
     private User findUser(Long userId) {

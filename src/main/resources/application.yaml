@@ -1,6 +1,11 @@
 spring:
   application:
-    name: cine-crew
+    name: cine-
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
 
   datasource:
     url: ${DB_URL}
@@ -63,12 +68,19 @@ rsa:
 
 app:
   frontend-url: ${FRONTEND_URL}
+
   invite:
     ttl-minutes: ${INVITE_TTL_MINUTES}
+
+  storage:
+    local-directory: ${APP_STORAGE_LOCAL_DIRECTORY:uploads}
+    public-base-url: ${APP_STORAGE_PUBLIC_BASE_URL:http://localhost:8080/uploads}
+
   security:
     jwt:
       expiration-minutes: ${JWT_EXPIRATION_MINUTES}
       issuer: ${JWT_ISSUER}
+
 
 springdoc:
   api-docs:
